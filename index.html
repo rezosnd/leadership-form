@@ -109,75 +109,98 @@
     <div class="form-container">
         <h2>Leadership Application Form</h2>
 
-        <form id="leadershipForm">
-            <label>Full Name</label>
-            <input type="text" required>
+    <form id="leadershipForm">
+    <label>Full Name</label>
+    <input type="text" name="name" required>
 
-            <label>University Roll Number</label>
-            <input type="text" required>
+    <label>University Roll Number</label>
+    <input type="text" name="roll" required>
 
-            <label>Branch & Year</label>
-            <select required>
-                <option>1st Year</option>
-                <option>2nd Year</option>
-            </select>
+    <label>Branch & Year</label>
+    <select name="branch" required>
+        <option value="1st Year">1st Year</option>
+        <option value="2nd Year">2nd Year</option>
+    </select>
 
-            <label>Contact Number</label>
-            <input type="tel" required>
+    <label>Contact Number</label>
+    <input type="tel" name="contact" required>
 
-            <label>Email ID</label>
-            <input type="email" required>
+    <label>Email ID</label>
+    <input type="email" name="email" required>
 
-            <label>Choose Your Leadership Domain</label>
-            <select required>
-                <option>Research & Policy Analysis</option>
-                <option>Event Management</option>
-                <option>Public Relations & Outreach</option>
-                <option>Content & Documentation</option>
-                <option>Finance & Sponsorship</option>
-            </select>
+    <label>Choose Your Leadership Domain</label>
+    <select name="domain" required>
+        <option value="Research & Policy Analysis">Research & Policy Analysis</option>
+        <option value="Event Management">Event Management</option>
+        <option value="Public Relations & Outreach">Public Relations & Outreach</option>
+        <option value="Content & Documentation">Content & Documentation</option>
+        <option value="Finance & Sponsorship">Finance & Sponsorship</option>
+    </select>
 
-            <label>Why do you want to lead this domain?</label>
-            <textarea required></textarea>
+    <label>Why do you want to lead this domain?</label>
+    <textarea name="why_lead" required></textarea>
 
-            <label>What makes you a good leader?</label>
-            <textarea required></textarea>
+    <label>What makes you a good leader?</label>
+    <textarea name="leadership_qualities" required></textarea>
 
-            <label>Have you held any leadership roles before?</label>
-            <select id="leadershipExperience" required onchange="toggleExperienceDetails()">
-                <option value="No">No</option>
-                <option value="Yes">Yes</option>
-            </select>
+    <label>Have you held any leadership roles before?</label>
+    <select name="past_experience" id="leadershipExperience" required onchange="toggleExperienceDetails()">
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+    </select>
 
-            <div id="experienceDetails" style="display: none;">
-                <label>If Yes, explain briefly:</label>
-                <textarea></textarea>
-            </div>
-
-            <label>What new ideas would you bring to this society?</label>
-            <textarea required></textarea>
-
-            <button type="submit">Submit</button>
-
-            <div class="success-message">Thank you for applying! If shortlisted, we will contact you via email.</div>
-        </form>
+    <div id="experienceDetails" style="display: none;">
+        <label>If Yes, explain briefly:</label>
+        <textarea name="experience_details"></textarea>
     </div>
 
-    <script>
-        // Handle Form Submission
-        document.getElementById("leadershipForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            document.querySelector(".success-message").style.display = "block";
+    <label>What new ideas would you bring to this society?</label>
+    <textarea name="new_ideas" required></textarea>
+
+    <button type="submit">Submit</button>
+
+    <p class="success-message" style="display: none; color: green;">✅ Thank you for applying! If shortlisted, we will contact you via email.</p>
+</form>
+    </div>
+
+   <script>
+    // Handle Form Submission
+    document.getElementById("leadershipForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        var formData = new FormData(event.target);
+        var object = {};
+        formData.forEach((value, key) => { object[key] = value; });
+
+        fetch("YOUR_WEB_APP_URL_HERE", { // Replace with your actual Web App URL
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(object)
+        })
+        .then(response => response.text())
+        .then(data => {
+            console.log("Server Response:", data); // Debugging
+            if (data.trim() === "Success") {
+                document.querySelector(".success-message").style.display = "block";
+            } else {
+                alert("Error: " + data);
+            }
+        })
+        .catch(error => {
+            console.error("Fetch Error:", error);
+            alert("Request failed: Check your internet connection and Web App URL.");
         });
+    });
 
-        // Toggle Leadership Experience Details
-        function toggleExperienceDetails() {
-            var selectBox = document.getElementById("leadershipExperience");
-            var detailsBox = document.getElementById("experienceDetails");
-            detailsBox.style.display = (selectBox.value === "Yes") ? "block" : "none";
-        }
+    // Toggle Leadership Experience Details
+    function toggleExperienceDetails() {
+        var selectBox = document.getElementById("leadershipExperience");
+        var detailsBox = document.getElementById("experienceDetails");
+        detailsBox.style.display = (selectBox.value === "Yes") ? "block" : "none";
+    }
 
-        // Background Animation Script
+    // Background Animation Script
+    document.addEventListener("DOMContentLoaded", function () {
         var canvas = document.getElementById('backgroundCanvas'),
             ctx = canvas.getContext('2d');
 
@@ -216,7 +239,9 @@
             requestAnimationFrame(animateBackground);
         }
         animateBackground();
-    </script>
+    });
+</script>
 <script src="submit.js"></script>
+
 </body>
 </html>
