@@ -1,20 +1,23 @@
 document.getElementById("leadershipForm").addEventListener("submit", function(event) {
     event.preventDefault();
 
-    let formData = new FormData(event.target);
-    let data = {};
-    formData.forEach((value, key) => { data[key] = value; });
+    var formData = new FormData(event.target);
+    var object = {};
+    formData.forEach((value, key) => { object[key] = value; });
 
-    fetch("https://67e806b320e3af747c403cad.mockapi.io/LeadershipApplications", {
+    fetch("https://67e8087720e3af747c4043b5.mockapi.io/applications", { // Use your actual endpoint
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
+        body: JSON.stringify(object)
     })
     .then(response => response.json())
-    .then(() => {
+    .then(data => {
+        console.log("Server Response:", data);
+        alert("Form Submitted Successfully!");
         document.querySelector(".success-message").style.display = "block";
     })
     .catch(error => {
-        alert("Error: " + error.message);
+        console.error("Fetch Error:", error);
+        alert("Request failed: Check API URL and Internet Connection.");
     });
 });
