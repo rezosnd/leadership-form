@@ -172,25 +172,21 @@
         var object = {};
         formData.forEach((value, key) => { object[key] = value; });
 
-        fetch("YOUR_WEB_APP_URL_HERE", { // Replace with your actual Web App URL
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(object)
-        })
-        .then(response => response.text())
-        .then(data => {
-            console.log("Server Response:", data); // Debugging
-            if (data.trim() === "Success") {
-                document.querySelector(".success-message").style.display = "block";
-            } else {
-                alert("Error: " + data);
-            }
-        })
-        .catch(error => {
-            console.error("Fetch Error:", error);
-            alert("Request failed: Check your internet connection and Web App URL.");
-        });
-    });
+fetch("https://67e8087720e3af747c4043b5.mockapi.io/applications", { // Correct API URL
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(object)
+})
+.then(response => response.json())
+.then(data => {
+    console.log("Server Response:", data); // Debugging
+    document.querySelector(".success-message").style.display = "block";
+})
+.catch(error => {
+    console.error("Fetch Error:", error);
+    alert("Request failed: Check your internet connection and API URL.");
+});
+
 
     // Toggle Leadership Experience Details
     function toggleExperienceDetails() {
