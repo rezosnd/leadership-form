@@ -1,29 +1,22 @@
 document.getElementById("leadershipForm").addEventListener("submit", function(event) {
     event.preventDefault();
 
-    var formData = {
-        name: document.querySelector("input[name='name']").value,
-        rollNumber: document.querySelector("input[name='rollNumber']").value,
-        branchYear: document.querySelector("select[name='branchYear']").value,
-        contact: document.querySelector("input[name='contact']").value,
-        email: document.querySelector("input[name='email']").value,
-        domain: document.querySelector("select[name='domain']").value,
-        whyLead: document.querySelector("textarea[name='whyLead']").value,
-        leadershipSkills: document.querySelector("textarea[name='leadershipSkills']").value,
-        experience: document.getElementById("leadershipExperience").value,
-        experienceDetails: document.querySelector("textarea[name='experienceDetails']")?.value || "N/A",
-        newIdeas: document.querySelector("textarea[name='newIdeas']").value
-    };
+    var formData = new FormData(event.target);
+    var object = {};
+    formData.forEach((value, key) => { object[key] = value; });
 
-    fetch("https://script.google.com/macros/s/AKfycbwsD0so_ZlBl2ack6ePtRdl8FTQMlkVjaXe3agk4OF4mjDbNvVzm6czkOzs1fKw5HCvvQ/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbyjuDr1HEJc_bwfNUbcr9RUTxrKFUlijHFLugs5cuQflPxvitBALofRabXyTzb5C8JKgA/exec", { // Replace with your Web App URL
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(object) // Convert form data to JSON
     })
     .then(response => response.text())
     .then(data => {
-        document.querySelector(".success-message").style.display = "block";
-        console.log("Success:", data);
+        if (data.trim() === "Success") { // Trim to remove spaces/newlines
+            document.querySelector(".success-message").style.display = "block";
+        } else {
+            alert("Error: " + data);
+        }
     })
-    .catch(error => console.error("Error:", error));
+    .catch(error => alert("Request failed: " + error));
 });
