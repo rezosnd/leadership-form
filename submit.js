@@ -1,32 +1,31 @@
-document.getElementById("leadershipForm").addEventListener("submit", async function (event) {
+document.getElementById("leadershipForm").addEventListener("submit", function(event) {
     event.preventDefault();
 
     var formData = new FormData(event.target);
     var object = {};
     formData.forEach((value, key) => { object[key] = value; });
 
-    try {
-        let response = await fetch("https://script.google.com/macros/s/AKfycbxiQI2R4rI6rTOjJEBll7obPwRiIcBZDP8JiV_YW_7X3svvexf5lT53sK5X27ZPjZFY3w/exec", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" }, // Ensure JSON format
-            body: JSON.stringify(object)
-        });
-
-        let data = await response.text();
+    fetch("https://script.googleusercontent.com/a/macros/kiit.ac.in/echo?user_content_key=AehSKLh3kxHegGZF_Ai-gpl856NefL3IUBkoRAjzY600rLz7gYQp8hNeTc5Int23FWTIk3j_5miXyqlOF8zZNkjB5ox0Xr34_9Tz8wqLYnSyyY2rHxQn-vJiopV-bFv57XDjgP5FRlX-2wU86nEa6IvIzR6agD8DQAYV5ZRzM3y26EX0lPOwSI03sohwYlCWSUvBkMOEfQnHpq6whZT5SLA0FVpGo48nhD-cTENI1x8iFzduaOxI5RSjFdO-ZvTQf5kAPnVSDgQ2WhnirF-el4uwhy5lFVDEVaPJ1om9c8S6Mi06MB3w--w&lib=MvwVsSf_a-MsRHlWf7XR0MgNHg2PcYo_n", { 
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(object)
+    })
+    .then(response => response.json())
+    .then(data => {
         console.log("Server Response:", data); // Debugging
 
-        if (data.trim() === "Invalid Request") {
-            alert("⚠️ Invalid Request: Ensure form fields are filled correctly.");
-        } else if (data.trim() === "Sheet Not Found") {
-            alert("❌ Error: Google Sheet Not Found. Check the Sheet Name.");
-        } else if (data.trim().toLowerCase().includes("success")) {
+        if (data.status === "Invalid Request") {
+            alert("Invalid Request: Ensure data is being sent correctly.");
+        } else if (data.status === "Sheet Not Found") {
+            alert("Error: Google Sheet Not Found. Verify the Sheet Name.");
+        } else if (data.status === "Success") {
             document.querySelector(".success-message").style.display = "block";
-            event.target.reset(); // Clear form on success
         } else {
-            alert("⚠️ Unexpected Error: " + data);
+            alert("Unexpected Error: " + data.message);
         }
-    } catch (error) {
+    })
+    .catch(error => {
         console.error("Fetch Error:", error);
-        alert("❌ Request failed: Check your internet connection and Web App URL.");
-    }
+        alert("Request failed: Check your internet connection and Web App URL.");
+    });
 });
