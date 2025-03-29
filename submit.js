@@ -5,7 +5,7 @@ document.getElementById("leadershipForm").addEventListener("submit", function(ev
     var object = {};
     formData.forEach((value, key) => { object[key] = value; });
 
-    fetch("https://script.google.com/macros/s/AKfycbw2TvoAzBobNkpPzlgVH_9-WXq-zDjhLkACBbyQ5w6ZeyV8tnv4Ah9zVm5qC6GIOQvvLw/exec", {  // Use updated Web App URL
+    fetch("https://script.google.com/macros/s/AKfycbwjAZZhAjvgqgzLiDJ8IwZ1a5u2igTvcpMB1V--7kxqnkVWrfho50O7y-vcFHmCQvGBpA/exec", {  // Use updated Web App URL
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams(object).toString()
